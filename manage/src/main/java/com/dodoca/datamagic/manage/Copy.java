@@ -34,34 +34,43 @@ public class Copy {
         List<String> oldDashIdList = new ArrayList<String>(Arrays.asList(str1));
         String[] str2 = ConstantUtil.getArray("dashIds_new");
         List<String> newDashIdList = new ArrayList<String>(Arrays.asList(str2));
-        List<String> newDashIdList_tmp = new ArrayList<String>();
-        newDashIdList_tmp.addAll(newDashIdList);
-        Map<String, String> map = new HashMap<String, String>();
-        List<Item> items = new ArrayList<Item>();
-        List<String> tmp = new ArrayList<String>();
-        List<List<Item>> itemList = new ArrayList<List<Item>>();
-        Map<String, List<Item>> dashMap = new HashMap<String, List<Item>>();
-        Dashboard dashboard_old = null;
-        for (String id : oldDashIdList
-                ) {
-            dashboard_old = dashboardService.get(id, oldProject);
-            items = dashboard_old.getItems();
-            dashMap.put(dashboard_old.getId(), items);
+        Map<String, Bookmark> map = new HashMap<String, Bookmark>();
+        Map<String, String> idMap = new HashMap<String, String>();
+
+        for (int i = 0; i < oldDashIdList.size(); i++) {
+            idMap.put(oldDashIdList.get(i), newDashIdList.get(i));
         }
-        for (String oldId : oldDashIdList) {
-            for (String newId : newDashIdList_tmp) {
-                map.put(oldId, newId);
-                newDashIdList_tmp.remove(newId);
-                break;
-            }
-        }
-        for (String str : dashMap.keySet()) {
-            List<Item> items1 = dashMap.get(str);
-            for (Item item : items1) {
+
+        for (String id : oldDashIdList) {
+            Dashboard dashboard = dashboardService.get(id, oldProject);
+            List<Item> items = dashboard.getItems();
+            for (Item item : items) {
                 Bookmark bookmark = item.getBookmark();
+                String id1 = bookmark.getId();
+
                 String type = bookmark.getType();
                 String name = bookmark.getName();
                 String data = bookmark.getData();
+                String[] dashboards = bookmark.getDashboards();
+                String[] relatedEvents = bookmark.getRelatedEvents();
+                List<String> dashboardsList = new ArrayList<String>(Arrays.asList(dashboards));
+
+                for (int i = 0; i < dashboardsList.size(); i++) {
+                    for (String key : idMap.keySet()) {
+                        if (!((idMap.keySet()).contains(dashboardsList.get(i)))) {
+                            dashboardsList.remove(i);
+                        } else {
+                            if (!dashboards[i].equals(key)) {
+                                continue;
+                            } else {
+                                dashboardsList.set(i, idMap.get(key));
+                                break;
+                            }
+                        }
+                    }
+                }
+                dashboards = (String[]) dashboardsList.toArray(new String[dashboardsList.size()]);
+
                 Map<String, Object> map1 = JSONUtil.jsonToObject(data, Map.class);
                 List<Map<String, Object>> new_measures = new ArrayList<Map<String, Object>>();
                 Map<String, Object> sob = new HashMap<String, Object>();
@@ -95,45 +104,31 @@ public class Copy {
                 }
                 map1.put("by_fields", by_fields);
                 map1.remove("bookmarkid");
+                map1.put("filter",null);
                 map1.put("measures", new_measures);
-                String new_data = JSONUtil.objectToJson(map1);
-                String[] dashboards = bookmark.getDashboards();
-                String[] relatedEvents = bookmark.getRelatedEvents();
-                //对取得的dashboardId进行处理
-                for (String ids : map.keySet()) {
-                    if (str.equals(ids)) {
-                        tmp.add(map.get(ids));
-                    }
-                }
-                String[] new_dashbordsId = (String[]) tmp.toArray(new String[0]);
-                tmp.clear();
+                data = JSONUtil.objectToJson(map1);
+
+
+
                 Bookmark newbookMark = new Bookmark();
                 newbookMark.setType(type);
                 newbookMark.setName(name);
-                newbookMark.setData(new_data);
-                newbookMark.setDashboards(new_dashbordsId);
+                newbookMark.setData(data);
+                newbookMark.setDashboards(dashboards);
                 newbookMark.setRelatedEvents(relatedEvents);
 
 
-//                for (String newId : tmp) {
-//                    Dashboard dashboard = dashboardService.get(newId, newProject);
-//                    List<Item> items2 = dashboard.getItems();
-//                    if (items2.equals(null)) {
-//                        continue;
-//                    } else {
-//                        for (Item item2 : items2) {
-//                            String name1 = item2.getBookmark().getName();
-//                            if (!name1.equals(name)) {
-//
-//                            } else {
-//                                continue;
-//                            }
-//                        }
-//                    }
-//                }
-
-                bookmarkService.save(newbookMark, newProject);
+                map.put(id1, newbookMark);
             }
         }
+
+        ArrayList<String> saveIds = new ArrayList<String>();
+        for (String key : map.keySet()){
+            Bookmark bookmark = map.get(key);
+            String save_id = bookmarkService.save(bookmark, newProject);
+            saveIds.add(save_id);
+            System.err.println(saveIds);
+        }
+
     }
 }

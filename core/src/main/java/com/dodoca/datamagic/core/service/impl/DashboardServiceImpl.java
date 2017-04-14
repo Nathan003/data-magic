@@ -4,6 +4,7 @@ import com.dodoca.datamagic.common.JSONUtil;
 import com.dodoca.datamagic.core.DataMagicUtil;
 import com.dodoca.datamagic.core.model.Dashboard;
 import com.dodoca.datamagic.core.service.DashboardService;
+import com.dodoca.datamagic.core.vo.Item;
 import com.google.gson.Gson;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class DashboardServiceImpl implements DashboardService {
 
     public Dashboard get(String id) {
 
-        Dashboard dashboard = JSONUtil.jsonToObject(DataMagicUtil.getDashboardById(id).getData(),Dashboard.class);
+        Dashboard dashboard = JSONUtil.jsonToObject(DataMagicUtil.getDashboardById(id).getData(), Dashboard.class);
         return dashboard;
     }
 
@@ -59,4 +60,15 @@ public class DashboardServiceImpl implements DashboardService {
         return status == 200;
     }
 
+    public static void main(String[] args) {
+//        Dashboard dashboard = new DashboardServiceImpl().get("125");
+//        List<Item> items = dashboard.getItems();
+//        for (Item item : items){
+//            System.out.println(item.getBookmark().getName() + ":" + item.getConfig());
+//        }
+        String str = "{\"bookmark\": {\"id\": 610,\"type\": \"/segmentation/\",\"name\": \"当日收款 - KA乱世佳人\",\"data\": \"\",\"create_time\": \"2016-11-19 09:04:38\",\"user_id\": 38,\"dashboards\": [109],\"project_id\": 22},\"config\": \"{}\",\"bookmark_id\": 0 }";
+
+//        System.out.println(JSONUtil.objectToJson(new Item()));
+        Item item = JSONUtil.jsonToObject(str,Item.class);
+    }
 }

@@ -8,7 +8,6 @@ import com.dodoca.datamagic.core.model.User;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -497,6 +496,9 @@ public class DataMagicUtil {
         BaseResponse response = HttpClientUtils.delete(url, null, "sensorsdata-token", getAdminToken(project));
         return response;
     }
+
+
+
 
     public static void main(String[] args) throws Exception {
         System.out.println(login("admin"));

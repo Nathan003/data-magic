@@ -111,7 +111,7 @@ public class ParamUtil {
         valueList.add(value);
         List<Map<String, Object>> conditions = (List<Map<String, Object>>) filter.get("conditions");
         for (Map<String, Object> condition : conditions) {
-            if (condition.get("field").toString().toLowerCase().contains(reg.toLowerCase())
+            if (condition.get("field").toString().toLowerCase().endsWith(reg.toLowerCase())
                     && ((List)condition.get("params")).size() > 0) {
                 condition.put("params", valueList);
             }

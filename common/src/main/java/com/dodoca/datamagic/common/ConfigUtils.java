@@ -25,6 +25,9 @@ public class ConfigUtils {
      */
     public static void load(String path) throws Exception {
         try {
+            PropertiesConfiguration tempConfig = new PropertiesConfiguration();
+            tempConfig.setEncoding("UTF-8");
+            tempConfig.load(path);
             config.addConfiguration(new PropertiesConfiguration(path));
             // 当文件的内容发生改变时，配置对象也会刷新
         } catch (ConfigurationException e) {
@@ -34,6 +37,8 @@ public class ConfigUtils {
 
 //        DefaultConfigurationBuilder builder = new DefaultConfigurationBuilder(path);
 //        config = builder.getConfiguration(true);
+
+
     }
 
     /**
@@ -55,12 +60,7 @@ public class ConfigUtils {
     }
 
     public static void main(String[] args) throws Exception {
-        ConfigUtils.load("datamagic.properties");
-        ConfigUtils.load("log4j.properties");
-        String[] arr = config.getStringArray("default.project");
-        for (String str : arr) {
-            System.out.println(str);
-        }
+        System.out.println(ConstantUtil.PROJECT);
     }
 
 

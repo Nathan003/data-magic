@@ -2,7 +2,6 @@ package com.dodoca.datamagic.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -37,6 +36,7 @@ public class JSONUtil {
      * @return
      */
     public static <T> T jsonToObject(String json, Class<T> clazz){
+//        System.out.println(json);
         try {
             return objectMapper.readValue(json,clazz);
         } catch (IOException e) {
@@ -45,6 +45,7 @@ public class JSONUtil {
         }
 //        return gson.fromJson(json,clazz);
     }
+
 
 
 }
