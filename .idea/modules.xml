@@ -8,7 +8,9 @@
       <module fileurl="file://$PROJECT_DIR$/elasticsearch/elasticsearch.iml" filepath="$PROJECT_DIR$/elasticsearch/elasticsearch.iml" />
       <module fileurl="file://$PROJECT_DIR$/manage/manage.iml" filepath="$PROJECT_DIR$/manage/manage.iml" />
       <module fileurl="file://$PROJECT_DIR$/preload/preload.iml" filepath="$PROJECT_DIR$/preload/preload.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web/web.iml" filepath="$PROJECT_DIR$/web/web.iml" />
       <module fileurl="file://$PROJECT_DIR$/wxrrd-api/wxrrd-api.iml" filepath="$PROJECT_DIR$/wxrrd-api/wxrrd-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wxrrd-web/wxrrd-web.iml" filepath="$PROJECT_DIR$/wxrrd-web/wxrrd-web.iml" />
     </modules>
   </component>
 </project>

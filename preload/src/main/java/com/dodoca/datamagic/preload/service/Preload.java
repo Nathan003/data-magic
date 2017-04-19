@@ -1,8 +1,8 @@
 package com.dodoca.datamagic.preload.service;
 
-import com.dodoca.datamagic.common.ConfigUtils;
-import com.dodoca.datamagic.common.ConstantUtil;
-import com.dodoca.datamagic.common.JSONUtil;
+import com.dodoca.datamagic.common.utils.ConfigUtils;
+import com.dodoca.datamagic.common.utils.ConstantUtil;
+import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.common.model.BaseResponse;
 import com.dodoca.datamagic.core.DataMagicUtil;
 import com.dodoca.datamagic.core.ParamUtil;

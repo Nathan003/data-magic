@@ -1,4 +1,4 @@
-package com.dodoca.datamagic.common;
+package com.dodoca.datamagic.common.utils;
 
 import org.apache.log4j.Logger;
 

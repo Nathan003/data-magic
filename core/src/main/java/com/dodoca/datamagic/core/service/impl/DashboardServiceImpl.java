@@ -1,6 +1,6 @@
 package com.dodoca.datamagic.core.service.impl;
 
-import com.dodoca.datamagic.common.JSONUtil;
+import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.core.DataMagicUtil;
 import com.dodoca.datamagic.core.model.Dashboard;
 import com.dodoca.datamagic.core.service.DashboardService;

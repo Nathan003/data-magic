@@ -1,21 +1,21 @@
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.dodoca.datamagic.common.HttpClientUtils;
-import com.dodoca.datamagic.common.JSONUtil;
+import com.dodoca.datamagic.common.utils.HttpClientUtils;
+import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.common.model.BaseResponse;
 import com.dodoca.datamagic.core.DataMagicUtil;
 import com.dodoca.datamagic.core.ParamUtil;
 import com.dodoca.datamagic.core.model.Bookmark;
 import com.dodoca.datamagic.core.model.Dashboard;
-import com.dodoca.datamagic.core.vo.*;
+import com.dodoca.datamagic.core.vo.EventDetail;
+import com.dodoca.datamagic.core.vo.Item;
+import com.dodoca.datamagic.es.bean.bean.EsClusterBean;
 import com.google.gson.Gson;
-import org.apache.tools.ant.taskdefs.optional.pvcs.Pvcs;
+import org.elasticsearch.action.index.IndexResponse;
 import org.junit.Test;
 
-import java.awt.print.Printable;
 import java.util.*;
 
-import static com.dodoca.datamagic.core.DataMagicUtil.dashboardsAuth;
 import static com.dodoca.datamagic.core.DataMagicUtil.getAdminToken;
 
 /**
@@ -220,38 +220,53 @@ public class test {
         //Dashboard dashboard = JSONUtil.jsonToObject(DataMagicUtil.getDashboardById("243","wxd_datamagic").getData(),Dashboard.class);
         //Dashboard dashboard = JSONUtil.jsonToObject(DataMagicUtil.getDashboardById("146","wxrrd_test_product_new").getData(),Dashboard.class);
         Dashboard dashboard = JSONUtil.jsonToObject(DataMagicUtil.getDashboardById("258","wxrrd_datamagic").getData(),Dashboard.class);
-        //System.err.println(dashboard.getConfig());
         List<Item> items = dashboard.getItems();
         for (Item item : items) {
             String[] dashboards = item.getBookmark().getDashboards();
-            for (String s:dashboards){
-                //System.err.print(s);
-            }
             //System.out.println(item.getBookmark().getName());
             String data=item.getBookmark().getData();
             data = data.replaceAll("\\\\", "").replaceAll("\\\"\\{", "{").replaceAll("\\}\\\"", "}");
-
             Map<String, Object> map = JSONUtil.jsonToObject(data, Map.class);
-
-            ParamUtil.replaceAllFilter(map,"user.SHOP_id","111111");
-            data = JSONUtil.objectToJson(map);
-
-            BaseResponse response = DataMagicUtil.reportSegmentation(item.getBookmark().getId(), data);
-
-
-
-            System.err.println(response.getData());
-
-
-
-            //System.err.println(item.getConfig());
-            //System.out.println("bookID: " + item.getBookmark().getId());
-            Map<String, Object> bookMap = JSONUtil.jsonToObject(item.getBookmark().getData(), Map.class);
-            List<Map<String, Object>> expressionList = (List<Map<String, Object>>) bookMap.get("measures");
-            //for (Map<String, Object> expression : expressionList) {
-                //System.out.println((List<String>) expression.get("events"));
-                //System.out.println((String) expression.get("event_name"));
-            //}
+            Map filter =(Map) map.get("filter");
+            if (filter.size() > 0 ){
+                List<Map<String,Object>> conditions = (List)filter.get("conditions");
+                if (conditions.toString().contains("SHOP_id")){
+                    ParamUtil.replaceAllFilter(map,"event.$Anything.SHOP_id","111111");
+                    data = JSONUtil.objectToJson(map);
+                    BaseResponse response = DataMagicUtil.reportSegmentation(item.getBookmark().getId(), data);
+                    JSONObject jsonData = JSONObject.parseObject(response.getData());
+                    IndexResponse indexResponse = EsClusterBean
+                            .getInstance()
+                            .getTransportClient()
+                            .prepareIndex(EsClusterBean.getInstance().getIndex(),
+                                    EsClusterBean.getInstance().getTypes(), "")
+                            .setSource(jsonData.toString()).get();
+                    if (indexResponse.isCreated()){
+                        System.err.println("插入成功！");
+                    }else {
+                        System.err.println("插入失败！");
+                    }
+                    System.err.println("回应"+response.getData());
+                }else {
+                    continue;
+                }
+            }else {
+                BaseResponse response = DataMagicUtil.reportSegmentation(item.getBookmark().getId(), data);
+                JSONObject jsonData = JSONObject.parseObject(response.getData());
+                IndexResponse indexResponse = EsClusterBean
+                        .getInstance()
+                        .getTransportClient()
+                        .prepareIndex(EsClusterBean.getInstance().getIndex(),
+                                EsClusterBean.getInstance().getTypes(), "")
+                        .setSource(jsonData.toString()).get();
+                if (indexResponse.isCreated()){
+                    System.err.println("插入成功！");
+                }else {
+                    System.err.println("插入失败！");
+                }
+                System.err.println("回应"+response.getData());
+                continue;
+            }
         }
     }
 
@@ -275,9 +290,20 @@ public class test {
             BaseResponse baseResponse = DataMagicUtil.reportSegmentation(item.getBookmark().getId(), data, "wxrrd_test_product_new");
             System.err.println("回应："+baseResponse.getData());
         }
+    }
 
-
-
+    @Test
+    public void test12(){
+        Bookmark bookmark = JSONUtil.jsonToObject(DataMagicUtil.getBookmarkByAdmin("618", "wxrrd_test_product_new").getData(), Bookmark.class);
+        String data = bookmark.getData();
+        data = data.replaceAll("\\\\", "").replaceAll("\\\"\\{", "{").replaceAll("\\}\\\"", "}");
+        System.err.println(data);
+        Map<String, Object> map = JSONUtil.jsonToObject(data, Map.class);
+        ParamUtil.replaceAllFilter(map,"user.TUIJIAN_SHOP_shop_line" , "神盾局");
+        data = JSONUtil.objectToJson(map);
+        System.err.println(data);
+        BaseResponse response = DataMagicUtil.reportSegmentation("618", data,"wxrrd_test_product_new");
+        System.err.println(response.getData());
     }
 
     @Test

@@ -1,7 +1,7 @@
 package com.dodoca.datamagic.core.vo;
 
-import com.dodoca.datamagic.common.DateUtil;
-import com.dodoca.datamagic.common.JSONUtil;
+import com.dodoca.datamagic.common.utils.DateUtil;
+import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.core.model.Bookmark;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

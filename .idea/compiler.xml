@@ -11,7 +11,9 @@
         <module name="elasticsearch" />
         <module name="manage" />
         <module name="preload" />
+        <module name="web" />
         <module name="wxrrd-api" />
+        <module name="wxrrd-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -21,7 +23,9 @@
       <module name="elasticsearch" target="1.5" />
       <module name="manage" target="1.5" />
       <module name="preload" target="1.5" />
+      <module name="web" target="1.5" />
       <module name="wxrrd-api" target="1.5" />
+      <module name="wxrrd-web" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>

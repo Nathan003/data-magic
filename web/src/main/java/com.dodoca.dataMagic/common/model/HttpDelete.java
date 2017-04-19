@@ -1,4 +1,4 @@
-package com.dodoca.datamagic.common.model;
+package com.dodoca.dataMagic.common.model;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 

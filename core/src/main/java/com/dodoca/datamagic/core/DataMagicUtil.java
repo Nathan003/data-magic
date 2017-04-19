@@ -1,8 +1,8 @@
 package com.dodoca.datamagic.core;
 
-import com.dodoca.datamagic.common.ConstantUtil;
-import com.dodoca.datamagic.common.HttpClientUtils;
-import com.dodoca.datamagic.common.JSONUtil;
+import com.dodoca.datamagic.common.utils.ConstantUtil;
+import com.dodoca.datamagic.common.utils.HttpClientUtils;
+import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.common.model.BaseResponse;
 import com.dodoca.datamagic.core.model.User;
 import org.apache.commons.lang.StringUtils;

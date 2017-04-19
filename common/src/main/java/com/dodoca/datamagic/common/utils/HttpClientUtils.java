@@ -1,8 +1,8 @@
-package com.dodoca.datamagic.common;
+package com.dodoca.datamagic.common.utils;
 
-import com.dodoca.datamagic.common.model.BaseResponse;
-import com.dodoca.datamagic.common.model.HttpDelete;
-import com.dodoca.datamagic.common.model.HttpGet;
+import com.dodoca.dataMagic.common.model.BaseResponse ;
+import com.dodoca.dataMagic.common.model.HttpDelete;
+import com.dodoca.dataMagic.common.model.HttpGet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

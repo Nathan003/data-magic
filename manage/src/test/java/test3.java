@@ -1,7 +1,7 @@
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.dodoca.datamagic.common.HttpClientUtils;
-import com.dodoca.datamagic.common.JSONUtil;
+import com.dodoca.datamagic.common.utils.HttpClientUtils;
+import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.common.model.BaseResponse;
 import com.dodoca.datamagic.core.vo.EventDetail;
 import com.dodoca.datamagic.core.vo.EventProperty;

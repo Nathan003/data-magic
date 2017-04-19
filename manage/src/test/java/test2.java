@@ -1,10 +1,8 @@
-import com.alibaba.fastjson.JSONObject;
-import com.dodoca.datamagic.common.JSONUtil;
+import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.core.DataMagicUtil;
 import com.dodoca.datamagic.core.model.Bookmark;
 import com.dodoca.datamagic.core.model.Dashboard;
 import com.dodoca.datamagic.core.vo.Item;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.google.gson.Gson;
 import org.junit.Test;
 

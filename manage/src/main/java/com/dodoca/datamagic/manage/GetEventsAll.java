@@ -1,7 +1,7 @@
 package com.dodoca.datamagic.manage;
 
-import com.dodoca.datamagic.common.ConfigUtils;
-import com.dodoca.datamagic.common.ConstantUtil;
+import com.dodoca.datamagic.common.utils.ConfigUtils;
+import com.dodoca.datamagic.common.utils.ConstantUtil;
 import com.dodoca.datamagic.core.model.Bookmark;
 import com.dodoca.datamagic.core.model.Dashboard;
 import com.dodoca.datamagic.core.service.DashboardService;
