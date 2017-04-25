@@ -1,8 +1,8 @@
 package com.dodoca.datamagic.core;
 
-import com.dodoca.datamagic.common.utils.ConstantUtil;
-import com.dodoca.datamagic.common.utils.JSONUtil;
-import com.dodoca.datamagic.core.model.User;
+import com.dodoca.datamagic.utils.ConstantUtil;
+import com.dodoca.datamagic.utils.JSONUtil;
+import com.dodoca.datamagic.utils.model.User;
 
 import java.util.ArrayList;
 import java.util.Iterator;

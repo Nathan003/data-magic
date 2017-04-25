@@ -1,8 +1,8 @@
-import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.core.DataMagicUtil;
-import com.dodoca.datamagic.core.model.Bookmark;
-import com.dodoca.datamagic.core.model.Dashboard;
-import com.dodoca.datamagic.core.vo.Item;
+import com.dodoca.datamagic.utils.JSONUtil;
+import com.dodoca.datamagic.utils.model.Bookmark;
+import com.dodoca.datamagic.utils.model.Dashboard;
+import com.dodoca.datamagic.utils.vo.Item;
 import com.google.gson.Gson;
 import org.junit.Test;
 

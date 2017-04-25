@@ -1,0 +1,43 @@
+package com.dodoca.datamagic.common.controller.springmvc;
+
+import com.dodoca.datamagic.common.service.DataMagicHandle;
+import com.dodoca.datamagic.common.service.DataMagicService;
+import com.dodoca.datamagic.utils.DataMagicUtil;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Map;
+
+/**
+ * Created by lifei on 2016/12/12.
+ */
+@Controller
+@RequestMapping("/funnels")
+public class FunnelsController {
+
+    @Autowired
+    private DataMagicService dataMagicService;
+
+    private Logger logger = Logger.getLogger(FunnelsController.class);
+
+    @RequestMapping(value = "/funnel/{id}/report", method = RequestMethod.POST)
+    @ResponseBody
+    public void funnel( @RequestBody Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        final String finalFunnelId = params.get("funnel_id").toString();
+
+        dataMagicService.service(params, request, response, new DataMagicHandle() {
+            public com.dodoca.datamagic.utils.model.BaseResponse handle(String bookmarkID, String data, String token) {
+                if(null == token){
+                    return DataMagicUtil.reportFunnel(finalFunnelId,bookmarkID, data);
+                }
+                return DataMagicUtil.reportFunnel(finalFunnelId,bookmarkID,data,token);
+            }
+        });
+    }
+}

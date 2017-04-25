@@ -1,9 +1,9 @@
 package com.dodoca.datamagic.core.service.impl;
 
-import com.dodoca.datamagic.common.utils.JSONUtil;
+import com.dodoca.datamagic.utils.JSONUtil;
 import com.dodoca.datamagic.core.DataMagicUtil;
-import com.dodoca.datamagic.core.model.Bookmark;
 import com.dodoca.datamagic.core.service.BookmarkService;
+import com.dodoca.datamagic.utils.model.Bookmark;
 import com.google.gson.Gson;
 
 import java.util.Map;

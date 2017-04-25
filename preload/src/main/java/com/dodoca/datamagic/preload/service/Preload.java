@@ -1,16 +1,16 @@
 package com.dodoca.datamagic.preload.service;
 
-import com.dodoca.datamagic.common.utils.ConfigUtils;
-import com.dodoca.datamagic.common.utils.ConstantUtil;
-import com.dodoca.datamagic.common.utils.JSONUtil;
-import com.dodoca.datamagic.common.model.BaseResponse;
+import com.dodoca.datamagic.utils.ConfigUtils;
+import com.dodoca.datamagic.utils.ConstantUtil;
+import com.dodoca.datamagic.utils.JSONUtil;
 import com.dodoca.datamagic.core.DataMagicUtil;
 import com.dodoca.datamagic.core.ParamUtil;
-import com.dodoca.datamagic.core.model.Bookmark;
-import com.dodoca.datamagic.core.model.Dashboard;
 import com.dodoca.datamagic.core.service.DashboardService;
 import com.dodoca.datamagic.core.service.impl.DashboardServiceImpl;
-import com.dodoca.datamagic.core.vo.Item;
+import com.dodoca.datamagic.utils.model.BaseResponse;
+import com.dodoca.datamagic.utils.model.Bookmark;
+import com.dodoca.datamagic.utils.model.Dashboard;
+import com.dodoca.datamagic.utils.vo.Item;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -102,7 +102,7 @@ public class Preload {
         preloadBookMark(item.getBookmark(),replaceReg,newValue,item.getFromDate(),item.getEndDate(),limit);
     }
 
-    public static String preloadBookMark(Bookmark bookmark,String replaceReg,String newValue,String fromDate,String endDate,int limit){
+    public static String preloadBookMark(Bookmark bookmark, String replaceReg, String newValue, String fromDate, String endDate, int limit){
 
         String data = bookmark.getData();
         data = data.replaceAll("\\\\", "").replaceAll("\\\"\\{", "{").replaceAll("\\}\\\"", "}");

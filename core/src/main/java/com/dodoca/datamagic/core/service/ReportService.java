@@ -1,7 +1,7 @@
 package com.dodoca.datamagic.core.service;
 
-import com.dodoca.datamagic.common.model.BaseResponse;
-import com.dodoca.datamagic.core.model.Bookmark;
+import com.dodoca.datamagic.utils.model.BaseResponse;
+import com.dodoca.datamagic.utils.model.Bookmark;
 
 /**
  * Created by lifei on 2017/3/13.
@@ -14,7 +14,7 @@ public interface ReportService {
      * @param token
      * @return
      */
-    BaseResponse report(Bookmark bookmark,String token);
+    BaseResponse report(Bookmark bookmark, String token);
 
     /**
      * 获取漏斗的书签数据

@@ -1,4 +1,4 @@
-import com.dodoca.datamagic.common.utils.ConfigUtils;
+import com.dodoca.datamagic.utils.ConfigUtils;
 import com.dodoca.datamagic.core.DataMagicUtil;
 import org.junit.Test;
 

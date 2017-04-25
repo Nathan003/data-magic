@@ -1,12 +1,12 @@
 package com.dodoca.datamagic.manage;
 
-import com.dodoca.datamagic.core.model.Bookmark;
-import com.dodoca.datamagic.core.model.Dashboard;
 import com.dodoca.datamagic.core.service.BookmarkService;
 import com.dodoca.datamagic.core.service.DashboardService;
 import com.dodoca.datamagic.core.service.impl.BookmarkServiceImpl;
 import com.dodoca.datamagic.core.service.impl.DashboardServiceImpl;
-import com.dodoca.datamagic.core.vo.Item;
+import com.dodoca.datamagic.utils.model.Bookmark;
+import com.dodoca.datamagic.utils.model.Dashboard;
+import com.dodoca.datamagic.utils.vo.Item;
 
 import java.util.List;
 

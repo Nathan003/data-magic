@@ -1,10 +1,10 @@
 package com.dodoca.datamagic.core.service.impl;
 
-import com.dodoca.datamagic.common.utils.JSONUtil;
 import com.dodoca.datamagic.core.DataMagicUtil;
-import com.dodoca.datamagic.core.model.Dashboard;
 import com.dodoca.datamagic.core.service.DashboardService;
-import com.dodoca.datamagic.core.vo.Item;
+import com.dodoca.datamagic.utils.JSONUtil;
+import com.dodoca.datamagic.utils.model.Dashboard;
+import com.dodoca.datamagic.utils.vo.Item;
 import com.google.gson.Gson;
 
 import java.util.List;
