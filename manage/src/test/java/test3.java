@@ -8,14 +8,12 @@ import com.dodoca.datamagic.utils.model.BaseResponse ;
 import com.dodoca.datamagic.utils.model.Bookmark;
 import com.dodoca.datamagic.utils.model.Dashboard;
 import com.dodoca.datamagic.utils.vo.*;
+import com.google.gson.Gson;
 import org.junit.Test;
 import org.w3c.dom.ls.LSException;
 import scala.collection.parallel.ParIterableLike;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.dodoca.datamagic.core.DataMagicUtil.getAdminToken;
 
@@ -206,18 +204,60 @@ public class test3 {
             System.err.println( map.get( "id" ) );
         }
 
-
-        for (int i=0;i<ids.size();i++){
-            String id = ids.get( i );
-            Dashboard dashboard = JSONUtil.jsonToObject( DataMagicUtil.getDashboardById( id,project ).getData(), Dashboard.class );
-            List<Item> items = dashboard.getItems();
-            for (int j =0 ;j<items.size();j++){
-                Item item = items.get( j );
+        List<List<Item>> itemList = new ArrayList<List<Item>>();
+        List<Bookmark> bookmarkList = new ArrayList<Bookmark>();
+        Set<String> final_events = new HashSet<String>();
+        for (String id : ids) {
+            Dashboard dashboards = JSONUtil.jsonToObject(DataMagicUtil.getDashboardById(id, project).getData(), Dashboard.class);
+            List<Item> items = dashboards.getItems();
+            itemList.add(items);
+        }
+        for (List<Item> it : itemList) {
+            for (Item item : it) {
                 Bookmark bookmark = item.getBookmark();
-                System.err.println( bookmark.getData() );
+                bookmarkList.add(bookmark);
             }
         }
-        //System.err.println( data);
+        for (Bookmark bookmark : bookmarkList) {
+            String datas = bookmark.getData();
+            Gson gs = new Gson();
+            Map map = gs.fromJson(datas, Map.class);
+            for (Object key : map.keySet()) {
+                if (key.equals("measures")) {
+                    List<Map<String, Object>> expressionList = (List<Map<String, Object>>) map.get(key);
+                    for (Map<String, Object> expression : expressionList) {
+                        List<String> events = (List<String>) expression.get("events");
+                        if (events == null) {
+                            if (expression.get("event_name") == null) {
+                                continue;
+                            } else {
+                                final_events.add((String) expression.get("event_name"));
+                            }
+                        } else {
+                            for (String event : events) {
+                                final_events.add(event.toString());
+                            }
+                        }
+                    }
+                } else if (key.equals("first_event")) {
+                    Map<String, Object> tmpMap = (Map<String, Object>) map.get(key);
+                    Object event_name = tmpMap.get("event_name");
+                    //System.err.println(event_name);
+                    final_events.add(event_name.toString());
+                } else if (key.equals("second_event")) {
+                    Map<String, Object> tmpMap = (Map<String, Object>) map.get(key);
+                    Object event_name = tmpMap.get("event_name");
+                    //System.err.println(event_name);
+                    final_events.add(event_name.toString());
+                } else {
+                    continue;
+                }
+            }
+        }
+        for (String strings : final_events) {
+            System.err.println(strings);
+        }
+        System.err.println("++++++++++++++++" + final_events.size());
     }
 
 
