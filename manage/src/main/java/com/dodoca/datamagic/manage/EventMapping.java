@@ -58,7 +58,6 @@ public class EventMapping {
                             } else {
                                 final_events.add((String) expression.get("event_name"));
                                 if ((expression.get("event_name")).equals( target )){
-                                    System.err.println( "11111111111111111111111111111111111"+ expression.get("event_name")+"+"+Arrays.toString( dashboards ) ) ;
                                     dashboardSet.addAll( Arrays.asList( dashboards ) );
                                     bookmarkSet1.add( id+" : "+name.replace( " -" ,"")+" " );
                                     bookmarkSet.add( id );
@@ -70,7 +69,6 @@ public class EventMapping {
                             for (String event : events) {
                                 final_events.add(event.toString());
                                 if (event.toString().equals( target )){
-                                    System.err.println("222222222222222222222222222222222222"+ event.toString() +"+"+Arrays.toString( dashboards ) ) ;
                                     dashboardSet.addAll( Arrays.asList( dashboards ) );
                                     bookmarkSet1.add( id+" : "+name.replace( " -" ,"")+" " );
                                     bookmarkSet.add( id );
@@ -83,10 +81,8 @@ public class EventMapping {
                 } else if (key.equals("first_event")) {
                     Map<String, Object> tmpMap = (Map<String, Object>) map.get(key);
                     Object event_name = tmpMap.get("event_name");
-                    //System.err.println(event_name);
                     final_events.add(event_name.toString());
                     if (event_name.toString().equals( target )){
-                        System.err.println("3333333333333333333333333333333333333333333333"+ event_name.toString()+"+"+ Arrays.toString( dashboards ) ) ;
                         dashboardSet.addAll( Arrays.asList( dashboards ) );
                         bookmarkSet1.add( id+" : "+name.replace( " -" ,"")+" " );
                         bookmarkSet.add( id );
@@ -96,10 +92,8 @@ public class EventMapping {
                 } else if (key.equals("second_event")) {
                     Map<String, Object> tmpMap = (Map<String, Object>) map.get(key);
                     Object event_name = tmpMap.get("event_name");
-                    //System.err.println(event_name);
                     final_events.add(event_name.toString());
                     if (event_name.toString().equals( target )){
-                        System.err.println("44444444444444444444444444444444444444444444444"+ event_name.toString() +"+"+Arrays.toString( dashboards ) ) ;
                         dashboardSet.addAll( Arrays.asList( dashboards ) );
                         bookmarkSet1.add( id+" : "+name.replace( " -" ,"")+" " );
                         bookmarkSet.add( id );
@@ -111,22 +105,12 @@ public class EventMapping {
                 }
             }
         }
-
-        System.err.println( "dashbordset111111111111111111" + dashboardSet );
-
-
-        for (String strings : final_events) {
-            System.err.println(strings);
-        }
         Set dashboardSet1 = new TreeSet(  );
         for (Object dashid:dashboardSet) {
             Dashboard dashboard = JSONUtil.jsonToObject( DataMagicUtil.getDashboardById( (String) dashid, project ).getData(), Dashboard.class );
             String name = dashboard.getName();
             dashboardSet1.add( dashid+" : "+name.replace( " -" ,"") );
         }
-
-        System.err.println( "dashbordset22222222222222222"+dashboardSet );
-
         HashMap<String, Set<String>> bookmarkIdMap = new HashMap<String, Set<String>>();
         for (Object dashid:dashboardSet) {
             Set<String> bookmarkIdList = new TreeSet<String>();
@@ -139,18 +123,12 @@ public class EventMapping {
             }
             bookmarkIdMap.put( (String)dashid ,bookmarkIdList );
         }
-
-
-        System.err.println( bookmarkIdMap );
-
         Map<String,Set<String>> tmp1 = new TreeMap<String, Set<String>>(  );
-
         for (String key :bookmarkIdMap.keySet()) {
             Dashboard dashboard = JSONUtil.jsonToObject( DataMagicUtil.getDashboardById( key, project ).getData(), Dashboard.class );
             String dashname = dashboard.getName();
             Set<String> tmp = new TreeSet<String>(  );
             Set<String> bookidList = bookmarkIdMap.get( key );
-            //Set<String> tmp2 = new TreeSet<String>(  );
             for (Object bookid:bookmarkSet) {
                 if (bookidList.contains( (String)bookid )){
                     Bookmark bookmark = JSONUtil.jsonToObject( DataMagicUtil.getBookmarkByAdmin( (String) bookid, project ).getData(), Bookmark.class );
