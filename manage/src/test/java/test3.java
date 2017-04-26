@@ -194,16 +194,18 @@ public class test3 {
 
     @Test
     public void test(){
+        String target = "pay_order1207";
         String project = "wxrrd_datamagic";
+        Set dashboardSet = new TreeSet(  );
+        Set bookmarkSet = new TreeSet(  );
         ArrayList<String> ids = new ArrayList<String>();
         String data = DataMagicUtil.getDashboardsAll( project ).getData();
         List list = JSONUtil.jsonToObject( data, List.class );
         for (int i =0 ;i < list.size();i++){
             Map<String,Object> map = (Map<String, Object>) list.get( i );
             ids.add( ""+map.get( "id" ) );
-            System.err.println( map.get( "id" ) );
+            //System.err.println( map.get( "id" ) );
         }
-
         List<List<Item>> itemList = new ArrayList<List<Item>>();
         List<Bookmark> bookmarkList = new ArrayList<Bookmark>();
         Set<String> final_events = new HashSet<String>();
@@ -220,6 +222,10 @@ public class test3 {
         }
         for (Bookmark bookmark : bookmarkList) {
             String datas = bookmark.getData();
+            String[] dashboards = bookmark.getDashboards();
+            String id = bookmark.getId();
+            String name = bookmark.getName();
+            //System.err.println( Arrays.toString( dashboards ) );
             Gson gs = new Gson();
             Map map = gs.fromJson(datas, Map.class);
             for (Object key : map.keySet()) {
@@ -232,10 +238,24 @@ public class test3 {
                                 continue;
                             } else {
                                 final_events.add((String) expression.get("event_name"));
+                                if ((expression.get("event_name")).equals( target )){
+                                    //System.err.println( expression.get("event_name")+"+"+Arrays.toString( dashboards ) ) ;
+                                    dashboardSet.addAll( Arrays.asList( dashboards ) );
+                                    bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                                }else {
+                                    continue;
+                                }
                             }
                         } else {
                             for (String event : events) {
                                 final_events.add(event.toString());
+                                if (event.toString().equals( target )){
+                                    //System.err.println(event.toString() +"+"+Arrays.toString( dashboards ) ) ;
+                                    dashboardSet.addAll( Arrays.asList( dashboards ) );
+                                    bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                                }else {
+                                    continue;
+                                }
                             }
                         }
                     }
@@ -244,11 +264,25 @@ public class test3 {
                     Object event_name = tmpMap.get("event_name");
                     //System.err.println(event_name);
                     final_events.add(event_name.toString());
+                    if (event_name.toString().equals( target )){
+                        //System.err.println(event_name.toString()+"+"+ Arrays.toString( dashboards ) ) ;
+                        dashboardSet.addAll( Arrays.asList( dashboards ) );
+                        bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                    }else {
+                        continue;
+                    }
                 } else if (key.equals("second_event")) {
                     Map<String, Object> tmpMap = (Map<String, Object>) map.get(key);
                     Object event_name = tmpMap.get("event_name");
                     //System.err.println(event_name);
                     final_events.add(event_name.toString());
+                    if (event_name.toString().equals( target )){
+                        //System.err.println(event_name.toString() +"+"+Arrays.toString( dashboards ) ) ;
+                        dashboardSet.addAll( Arrays.asList( dashboards ) );
+                        bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                    }else {
+                        continue;
+                    }
                 } else {
                     continue;
                 }
@@ -257,8 +291,14 @@ public class test3 {
         for (String strings : final_events) {
             System.err.println(strings);
         }
-        System.err.println("++++++++++++++++" + final_events.size());
+        Set dashboardSet1 = new TreeSet(  );
+        for (Object dashid:dashboardSet) {
+            Dashboard dashboard = JSONUtil.jsonToObject( DataMagicUtil.getDashboardById( (String) dashid, project ).getData(), Dashboard.class );
+            String name = dashboard.getName();
+            dashboardSet1.add( dashid+" : "+name.replace( " -" ,"") );
+        }
+        System.err.println( "事件："+target+"  所涉及到的所有概览分别是："+dashboardSet1 );
+        System.err.println( "事件："+target+"  所涉及到的所有书签分别是："+bookmarkSet );
+        //System.err.println("该项目中所有的事件数量为：  " + final_events.size());
     }
-
-
 }
