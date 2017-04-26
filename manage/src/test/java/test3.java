@@ -198,6 +198,7 @@ public class test3 {
         String project = "wxrrd_datamagic";
         Set dashboardSet = new TreeSet(  );
         Set bookmarkSet = new TreeSet(  );
+        Set bookmarkSet1 = new TreeSet(  );
         ArrayList<String> ids = new ArrayList<String>();
         String data = DataMagicUtil.getDashboardsAll( project ).getData();
         List list = JSONUtil.jsonToObject( data, List.class );
@@ -241,7 +242,8 @@ public class test3 {
                                 if ((expression.get("event_name")).equals( target )){
                                     //System.err.println( expression.get("event_name")+"+"+Arrays.toString( dashboards ) ) ;
                                     dashboardSet.addAll( Arrays.asList( dashboards ) );
-                                    bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                                    bookmarkSet1.add( id+" : "+name.replace( " -" ,"") );
+                                    bookmarkSet.add( id );
                                 }else {
                                     continue;
                                 }
@@ -252,7 +254,8 @@ public class test3 {
                                 if (event.toString().equals( target )){
                                     //System.err.println(event.toString() +"+"+Arrays.toString( dashboards ) ) ;
                                     dashboardSet.addAll( Arrays.asList( dashboards ) );
-                                    bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                                    bookmarkSet1.add( id+" : "+name.replace( " -" ,"") );
+                                    bookmarkSet.add( id );
                                 }else {
                                     continue;
                                 }
@@ -267,7 +270,8 @@ public class test3 {
                     if (event_name.toString().equals( target )){
                         //System.err.println(event_name.toString()+"+"+ Arrays.toString( dashboards ) ) ;
                         dashboardSet.addAll( Arrays.asList( dashboards ) );
-                        bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                        bookmarkSet1.add( id+" : "+name.replace( " -" ,"") );
+                        bookmarkSet.add( id );
                     }else {
                         continue;
                     }
@@ -279,7 +283,8 @@ public class test3 {
                     if (event_name.toString().equals( target )){
                         //System.err.println(event_name.toString() +"+"+Arrays.toString( dashboards ) ) ;
                         dashboardSet.addAll( Arrays.asList( dashboards ) );
-                        bookmarkSet.add( id+" : "+name.replace( " -" ,"") );
+                        bookmarkSet1.add( id+" : "+name.replace( " -" ,"") );
+                        bookmarkSet.add( id );
                     }else {
                         continue;
                     }
@@ -288,17 +293,58 @@ public class test3 {
                 }
             }
         }
+
+        System.err.println( dashboardSet );
         for (String strings : final_events) {
             System.err.println(strings);
         }
         Set dashboardSet1 = new TreeSet(  );
+
         for (Object dashid:dashboardSet) {
             Dashboard dashboard = JSONUtil.jsonToObject( DataMagicUtil.getDashboardById( (String) dashid, project ).getData(), Dashboard.class );
             String name = dashboard.getName();
             dashboardSet1.add( dashid+" : "+name.replace( " -" ,"") );
         }
-        System.err.println( "事件："+target+"  所涉及到的所有概览分别是："+dashboardSet1 );
-        System.err.println( "事件："+target+"  所涉及到的所有书签分别是："+bookmarkSet );
+        //System.err.println( "事件："+target+"  所涉及到的所有概览分别是："+dashboardSet1 );
+        //System.err.println( "事件："+target+"  所涉及到的所有书签分别是："+bookmarkSet1 );
+        //System.err.println( dashboardSet );
+        //System.err.println( bookmarkSet );
+
+        HashMap<String, Set<String>> bookmarkIdMap = new HashMap<String, Set<String>>();
+        for (Object dashid:dashboardSet) {
+            Set<String> bookmarkIdList = new TreeSet<String>();
+            Dashboard dashboard = JSONUtil.jsonToObject( DataMagicUtil.getDashboardById( (String) dashid, project ).getData(), Dashboard.class );
+            List<Item> items = dashboard.getItems();
+            for (Item item:items){
+                Bookmark bookmark = item.getBookmark();
+                String bookmarkId = bookmark.getId();
+                bookmarkIdList.add( bookmarkId );
+            }
+            bookmarkIdMap.put( (String)dashid ,bookmarkIdList );
+        }
+        Map<String,Set<String>> tmp1 = new TreeMap<String, Set<String>>(  );
+        for (String key :bookmarkIdMap.keySet()) {
+            Dashboard dashboard = JSONUtil.jsonToObject( DataMagicUtil.getDashboardById( key, project ).getData(), Dashboard.class );
+            String dashname = dashboard.getName();
+            Set<String> tmp = new TreeSet<String>(  );
+            Set<String> bookidList = bookmarkIdMap.get( key );
+            //Set<String> tmp2 = new TreeSet<String>(  );
+            for (Object bookid:bookmarkSet) {
+                if (bookidList.contains( (String)bookid )){
+                    Bookmark bookmark = JSONUtil.jsonToObject( DataMagicUtil.getBookmarkByAdmin( (String) bookid, project ).getData(), Bookmark.class );
+                    String bookname = bookmark.getName();
+                    tmp.add( (String)bookid+":"+bookname.replace( " -" ,"") );
+                }else {
+                    continue;
+                }
+            }
+            tmp1.put( key+":"+dashname.replace( " -" ,""),tmp );
+        }
+        System.err.println( "\n \n \n \n" );
+        System.err.println( "事件 "+target+" 所涉及到的书签分别为：");
+        for (String key:tmp1.keySet()) {
+            System.err.println( key+" 下的 "+tmp1.get( key )+"书签 " );
+        }
         //System.err.println("该项目中所有的事件数量为：  " + final_events.size());
     }
 }
